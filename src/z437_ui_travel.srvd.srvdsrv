@@ -1,0 +1,4 @@
+@EndUserText.label: 't437'
+define service Z437_UI_TRAVEL {
+  expose z437A_C_TRAVEL;
+}

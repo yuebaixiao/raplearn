@@ -1,0 +1,36 @@
+managed implementation in class zbp_437a_r_travel unique;
+//strict ( 2 );
+
+define behavior for z437A_R_TRAVEL alias Travel
+//implementation in class zbp_437a_r_travel unique
+persistent table z2463_dtravel
+lock master
+//authorization master ( instance )
+etag master ChangedAt
+{
+  create;
+  update;
+  delete;
+  field ( readonly ) AgencyId, TravelId;
+
+  action setcancel result [1] $self;
+
+  static action allAc;
+
+  factory action copyLine [1];
+
+//  internal action  ac parameter z43_C_TRAVEL result selective [1] z43_C_TRAVEL;
+//  static action st;
+//  static factory  action fa parameter z4A_C_TRAVEL [1];
+
+  mapping for z2463_dtravel corresponding
+    {
+      AgencyID   = agency_ID;
+      TravelID   = travel_id;
+      CustomerID = customer_id;
+      BeginDate  = begin_date;
+      EndDate    = end_date;
+      ChangedAt  = changed_at;
+      ChangedBy  = changed_by;
+    }
+}
