@@ -7,7 +7,11 @@ CLASS lhc_Travel DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR ACTION Travel~allAc.
     METHODS copyLine FOR MODIFY
       IMPORTING keys FOR ACTION Travel~copyLine.
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR Travel RESULT result.
 
+    METHODS is_allowed
+        RETURNING VALUE(rec) TYPE abap_bool.
 ENDCLASS.
 
 CLASS lhc_Travel IMPLEMENTATION.
@@ -116,6 +120,56 @@ CLASS lhc_Travel IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD copyLine.
+  ENDMETHOD.
+
+  METHOD get_global_authorizations.
+
+
+    DATA(rec) = is_allowed(  ).
+
+    IF requested_authorizations-%create = if_abap_behv=>mk-on.
+      IF ( rec = abap_true ).
+        result-%create = if_abap_behv=>auth-allowed.
+      ELSE.
+        result-%create = if_abap_behv=>auth-unauthorized.
+      ENDIF.
+    ENDIF.
+    IF requested_authorizations-%update = if_abap_behv=>mk-on.
+      IF ( rec = abap_true ).
+        result-%update = if_abap_behv=>auth-allowed.
+      ELSE.
+        result-%update = if_abap_behv=>auth-unauthorized.
+        result-%action-allAc = if_abap_behv=>auth-unauthorized.
+        result-%create = if_abap_behv=>auth-unauthorized.
+      ENDIF.
+    ENDIF.
+    IF requested_authorizations-%delete = if_abap_behv=>mk-on.
+      IF ( rec = abap_true ).
+        result-%delete = if_abap_behv=>auth-allowed.
+      ELSE.
+        result-%delete = if_abap_behv=>auth-unauthorized.
+      ENDIF.
+    ENDIF.
+    IF requested_authorizations-%action-setcancel = if_abap_behv=>mk-on.
+      IF ( rec = abap_true ).
+        result-%action-setcancel = if_abap_behv=>auth-allowed.
+      ELSE.
+        result-%action-setcancel = if_abap_behv=>auth-unauthorized.
+      ENDIF.
+    ENDIF.
+    IF requested_authorizations-%action-allAc = if_abap_behv=>mk-on.
+      IF ( rec = abap_true ).
+        result-%action-allAc = if_abap_behv=>auth-allowed.
+      ELSE.
+        result-%action-allAc = if_abap_behv=>auth-unauthorized.
+      ENDIF.
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD is_allowed.
+*    rec = abap_false.
+rec = abap_true.
   ENDMETHOD.
 
 ENDCLASS.

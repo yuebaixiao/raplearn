@@ -45,6 +45,12 @@ annotate view z437A_C_TRAVEL with
          }
 
     CustomerId;
+    
+    @UI: {
+           identification: [ { position: 45 } ]
+         }
+    cname;
+    
 
     @UI: {
            lineItem:       [ { position: 40, importance: #MEDIUM } ],

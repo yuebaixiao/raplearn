@@ -5,13 +5,22 @@ define behavior for z437A_R_TRAVEL alias Travel
 //implementation in class zbp_437a_r_travel unique
 persistent table z2463_dtravel
 lock master
-//authorization master ( instance )
+authorization master ( global )
 etag master ChangedAt
 {
   create;
+  //  internal update;
+  //  update ( features : global );
+  //  update ( features : instance );
+  //  update ( precheck );
   update;
+
   delete;
-  field ( readonly ) AgencyId, TravelId;
+
+//  field ( readonly ) AgencyId, TravelId;
+//  field ( readonly : update ) AgencyId, TravelId;
+//  field ( mandatory )  CustomerID, BeginDate;
+//  field ( mandatory : create )  CustomerID, BeginDate;
 
   action setcancel result [1] $self;
 
@@ -19,9 +28,9 @@ etag master ChangedAt
 
   factory action copyLine [1];
 
-//  internal action  ac parameter z43_C_TRAVEL result selective [1] z43_C_TRAVEL;
-//  static action st;
-//  static factory  action fa parameter z4A_C_TRAVEL [1];
+  //  internal action  ac parameter z43_C_TRAVEL result selective [1] z43_C_TRAVEL;
+  //  static action st;
+  //  static factory  action fa parameter z4A_C_TRAVEL [1];
 
   mapping for z2463_dtravel corresponding
     {
