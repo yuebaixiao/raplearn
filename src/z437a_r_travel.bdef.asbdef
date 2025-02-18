@@ -1,28 +1,41 @@
 managed implementation in class zbp_437a_r_travel unique;
 //strict ( 2 );
 
+with draft;
+
 define behavior for z437A_R_TRAVEL alias Travel
 //implementation in class zbp_437a_r_travel unique
 persistent table z2463_dtravel
-lock master
-authorization master ( global )
-etag master ChangedAt
+draft table z2463_dtravel_d
+lock master total etag ChangedAt
+authorization master ( global, instance )
+etag master LocChangedAt  //ChangedAt
 {
   create;
   //  internal update;
   //  update ( features : global );
   //  update ( features : instance );
   //  update ( precheck );
-  update;
+  update ( features : instance );
 
   delete;
 
-//  field ( readonly ) AgencyId, TravelId;
-//  field ( readonly : update ) AgencyId, TravelId;
-//  field ( mandatory )  CustomerID, BeginDate;
-//  field ( mandatory : create )  CustomerID, BeginDate;
+  field ( readonly ) UUID;
+  field ( numbering : managed ) UUID;
 
-  action setcancel result [1] $self;
+  validation validateStatus on save { create; update; field Status; }
+  validation validateDelete on save { delete; }
+
+  determination determineKey on modify { create; }
+
+  //  field ( readonly ) AgencyId, TravelId;
+  //  field ( readonly : update ) AgencyId, TravelId;
+  //  field ( mandatory )  CustomerID, BeginDate;
+  //  field ( mandatory : create )  CustomerID, BeginDate;
+
+  action ( features : instance ) setcancel result [1] $self;
+
+  field ( features : instance ) CustomerId, BeginDate;
 
   static action allAc;
 
@@ -34,6 +47,7 @@ etag master ChangedAt
 
   mapping for z2463_dtravel corresponding
     {
+      uuid       = uuid;
       AgencyID   = agency_ID;
       TravelID   = travel_id;
       CustomerID = customer_id;
@@ -41,5 +55,6 @@ etag master ChangedAt
       EndDate    = end_date;
       ChangedAt  = changed_at;
       ChangedBy  = changed_by;
+      LocChangedAt = loc_changed_at;
     }
 }

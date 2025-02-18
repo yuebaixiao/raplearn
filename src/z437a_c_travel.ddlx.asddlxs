@@ -19,7 +19,8 @@ annotate view z437A_C_TRAVEL with
                     label:         'Travel',
                     position:      10 }
                ]
-
+    @UI.hidden: true
+    uuid;
     @UI: {
            identification: [ { position: 10, importance: #LOW } ]
          }
@@ -78,4 +79,6 @@ annotate view z437A_C_TRAVEL with
     @UI.hidden: true
     ChangedBy;
 
+    @UI.hidden: true
+    LocChangedAt;
   }

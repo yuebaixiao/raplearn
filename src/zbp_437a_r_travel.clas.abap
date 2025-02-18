@@ -1,4 +1,6 @@
 CLASS zbp_437a_r_travel DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF z437a_r_travel.
+protected section.
+private section.
 ENDCLASS.
 
 

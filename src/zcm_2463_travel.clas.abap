@@ -20,6 +20,15 @@ CLASS zcm_2463_travel DEFINITION
         attr4 TYPE scx_attrname VALUE '',
       end of cancel_success,
 
+      BEGIN OF field_empty,
+        msgid TYPE symsgid VALUE 'ZS4D437_MESSAGECLASS',
+        msgno TYPE symsgno VALUE '200',
+        attr1 TYPE scx_attrname VALUE '',
+        attr2 TYPE scx_attrname VALUE '',
+        attr3 TYPE scx_attrname VALUE '',
+        attr4 TYPE scx_attrname VALUE '',
+      END OF field_empty,
+
       begin of already_cancelled,
         msgid TYPE symsgid VALUE 'ZS4D437_MESSAGECLASS',
         msgno TYPE symsgno VALUE '130',
@@ -48,7 +57,12 @@ CLASS ZCM_2463_TRAVEL IMPLEMENTATION.
       EXPORTING
         previous = previous.
 
-    if_abap_behv_message~m_severity = severity.
+*    if_abap_behv_message~m_severity = severity.
+    IF severity IS SUPPLIED.
+      if_abap_behv_message~m_severity = severity.
+    ELSE.
+      if_abap_behv_message~m_severity = if_abap_behv_message~severity-error.
+    ENDIF.
 
     CLEAR me->textid.
     IF textid IS INITIAL.
